@@ -1,17 +1,17 @@
 export interface TodoProps {
-  readonly id: number
-  todo: string
+  readonly id: string
+  todoContent: string
   completed: boolean
 }
 
 export class Todo implements TodoProps {
   id
-  todo
+  todoContent
   completed
 
-  constructor(id: number, todo: string, completed: boolean) {
+  constructor(id: string, todo: string, completed: boolean) {
     this.id = id
-    this.todo = todo
+    this.todoContent = todo
     this.completed = completed
   }
 
@@ -20,11 +20,11 @@ export class Todo implements TodoProps {
   }
 
   getTodoContent() {
-    return this.todo
+    return this.todoContent
   }
 
   setTodo(todo: string) {
-    this.todo = todo
+    this.todoContent = todo
   }
 
   isCompleted() {

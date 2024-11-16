@@ -1,8 +1,7 @@
 import { Checkbox, CheckboxProps } from 'antd'
 import { Todo } from '../../models/Todo'
-import styled from 'styled-components'
 import CloseButton from '../Button/CloseButton'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import todoStore from '../../stores/todo-store'
 
@@ -13,29 +12,33 @@ interface TodoitemProps {
 }
 
 function TodoItem({ todo, tabKey, onComplete }: TodoitemProps) {
-  const { deleteTodo } = todoStore
+  const { deleteTodo, updateTodo } = todoStore
 
-  const [isChecked, setIsCheckd] = useState(false)
+  const [isChecked, setIsCheckd] = useState<boolean>(todo.isCompleted())
+  const [todoValue, setTodoValue] = useState<string>(todo.getTodoContent())
 
   useEffect(() => {
     onComplete()
-  }, [isChecked])
+    setIsCheckd(todo.isCompleted())
+  }, [todo.isCompleted()])
 
   const onChange: CheckboxProps['onChange'] = () => {
     todo.toggleIsCompleted()
-    setIsCheckd(prev => !prev)
+    setIsCheckd(todo.isCompleted())
+    updateTodo(todo.getTodoId(), { completed: todo.isCompleted() })
   }
 
   function onClickHandler() {
     confirm('Вы уверены, что хотите удалить Todo?') && deleteTodo(todo)
   }
 
-  function onChangeHandler() {}
+  function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    setTodoValue(e.target.value)
+  }
 
-  const Input = styled.input`
-    text-decoration: ${todo.isCompleted() && 'line-through'};
-    color: ${todo.isCompleted() && '#aeaeae'};
-  `
+  function onBlurHandler() {
+    updateTodo(todo.getTodoId(), { todoContent: todoValue })
+  }
 
   const todoDisplay: string =
     (todo.isCompleted() && tabKey === '2') || (!todo.isCompleted() && tabKey === '1') || tabKey === '0'
@@ -45,7 +48,13 @@ function TodoItem({ todo, tabKey, onComplete }: TodoitemProps) {
   return (
     <div style={{ display: todoDisplay }} className="mt-2 flex items-end justify-center gap-6">
       <Checkbox style={{ transform: 'scale(1.2)' }} checked={isChecked} onChange={onChange} />
-      <Input disabled={true} className="text-xl min-w-80" onChange={onChangeHandler} value={todo.getTodoContent()} />
+      <input
+        style={{ textDecoration: todo.isCompleted() ? 'line-through' : '', color: todo.isCompleted() ? '#aeaeae' : '' }}
+        className="text-xl min-w-80"
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
+        value={todoValue}
+      />
       <CloseButton onClick={onClickHandler} />
     </div>
   )

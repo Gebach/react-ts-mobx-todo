@@ -2,12 +2,12 @@ import { observer } from 'mobx-react-lite'
 import CheckButton from '../Button/CheckButton'
 import Input from '../Input/Input'
 import todoStore from '../../stores/todo-store'
-import { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { Todo } from '../../models/Todo'
+import { nanoid } from 'nanoid'
 
 export const TodoAddTodo = observer(() => {
   const [todoValue, setTodoValue] = useState<string>('')
-  const formRef = useRef<HTMLFormElement | null>(null)
   const { addNewTodo } = todoStore
 
   function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -16,15 +16,19 @@ export const TodoAddTodo = observer(() => {
 
   function sumbitHandler(e?: FormEvent<HTMLFormElement>) {
     e?.preventDefault()
-    // formRef.current?.reset()
-    // setTodoValue('')
-    addNewTodo(new Todo(Date.now(), todoValue.trim(), false))
+    if (todoValue) addNewTodo(new Todo(nanoid(), todoValue.trim(), false))
+    else alert('Todo не должно быть пустым!')
+    setTodoValue('')
   }
 
   return (
-    <form ref={formRef} onSubmit={sumbitHandler} className="flex items-center justify-center gap-2">
+    <form onSubmit={sumbitHandler} className="flex items-center justify-center gap-2">
       <Input value={todoValue} onChange={onChangeHandler} />
-      <CheckButton onClick={sumbitHandler} />
+      <CheckButton
+        onClick={() => {
+          sumbitHandler()
+        }}
+      />
     </form>
   )
 })

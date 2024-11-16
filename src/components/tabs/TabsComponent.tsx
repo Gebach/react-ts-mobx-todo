@@ -1,4 +1,5 @@
-import { Tabs, TabsProps } from 'antd'
+import { Button, Tabs, TabsProps } from 'antd'
+import todoStore from '../../stores/todo-store'
 
 interface TabsComponentProps {
   onChange: (key: string) => void
@@ -13,6 +14,8 @@ function TabsComponent({
   tabsAmount,
   tabsKeys = tabsLabels.map(l => `${tabsLabels.indexOf(l)}`),
 }: TabsComponentProps) {
+  const { clearTodos } = todoStore
+
   const items: TabsProps['items'] = []
 
   for (let i = 0; i < tabsAmount; i++) {
@@ -22,7 +25,18 @@ function TabsComponent({
     })
   }
 
-  return <Tabs defaultActiveKey="0" items={items} onChange={onChange} />
+  function onClickHandler() {
+    if (confirm('Вы уверены, что хотите очистить лист Todo?')) clearTodos()
+  }
+
+  return (
+    <>
+      <Tabs defaultActiveKey="0" items={items} onChange={onChange} />
+      <Button color="danger" variant="solid" onClick={onClickHandler}>
+        Очистить все
+      </Button>
+    </>
+  )
 }
 
 export default TabsComponent
