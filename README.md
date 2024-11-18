@@ -1,3 +1,5 @@
+### Показательное Todo приложение с использованием классов и state-manager(MobX), vitest для unit-тестов, tailwindCSS и UI framework antd
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
