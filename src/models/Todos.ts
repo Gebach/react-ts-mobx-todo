@@ -7,7 +7,7 @@ export class Todos {
     this.todos = todos
   }
 
-  getTodos() {
+  getLocalTodos() {
     return this.todos
   }
 }

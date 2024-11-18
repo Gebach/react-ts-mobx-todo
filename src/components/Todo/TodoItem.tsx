@@ -3,7 +3,7 @@ import { Todo } from '../../models/Todo'
 import CloseButton from '../Button/CloseButton'
 import React, { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import todoStore from '../../stores/todo-store'
+import todosStore from '../../stores/todo-store'
 
 interface TodoitemProps {
   todo: Todo
@@ -12,7 +12,7 @@ interface TodoitemProps {
 }
 
 function TodoItem({ todo, tabKey, onComplete }: TodoitemProps) {
-  const { deleteTodo, updateTodo } = todoStore
+  const { deleteTodo, updateTodo } = todosStore
 
   const [isChecked, setIsCheckd] = useState<boolean>(todo.isCompleted())
   const [todoValue, setTodoValue] = useState<string>(todo.getTodoContent())
@@ -44,6 +44,10 @@ function TodoItem({ todo, tabKey, onComplete }: TodoitemProps) {
     (todo.isCompleted() && tabKey === '2') || (!todo.isCompleted() && tabKey === '1') || tabKey === '0'
       ? 'flex'
       : 'none'
+
+  if (!todo.getTodoId()) {
+    throw new Error('Unexpected error')
+  }
 
   return (
     <div style={{ display: todoDisplay }} className="mt-2 flex items-end justify-center gap-6">

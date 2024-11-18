@@ -1,14 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import CheckButton from '../Button/CheckButton'
 import Input from '../Input/Input'
-import todoStore from '../../stores/todo-store'
+import todosStore from '../../stores/todo-store'
 import { FormEvent, useState } from 'react'
 import { Todo } from '../../models/Todo'
 import { nanoid } from 'nanoid'
 
 export const TodoAddTodo = observer(() => {
   const [todoValue, setTodoValue] = useState<string>('')
-  const { addNewTodo } = todoStore
+  const { addNewTodo } = todosStore
 
   function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setTodoValue(e.target.value)
@@ -23,7 +23,7 @@ export const TodoAddTodo = observer(() => {
 
   return (
     <form onSubmit={sumbitHandler} className="flex items-center justify-center gap-2">
-      <Input value={todoValue} onChange={onChangeHandler} />
+      <Input role="add-todo-input" value={todoValue} onChange={onChangeHandler} />
       <CheckButton
         onClick={() => {
           sumbitHandler()

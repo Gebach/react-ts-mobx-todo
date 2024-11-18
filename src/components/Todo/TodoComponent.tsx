@@ -1,19 +1,22 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { TodoAddTodo } from './TodoAddTodo'
 import { TodoList } from './TodoList'
-import todoStore from '../../stores/todo-store'
+import todosStore from '../../stores/todo-store'
+import { Todo } from '../../models/Todo'
 
 function TodoComponent() {
-  const { getTodos } = todoStore
+  const { getTodos, getLocalTodos } = todosStore
+  const [todos, setTodos] = useState<Todo[]>([])
 
   useEffect(() => {
-    getTodos()
+    getLocalTodos()
+    setTodos(getTodos())
   }, [])
 
   return (
     <>
       <TodoAddTodo />
-      <TodoList />
+      <TodoList todosArr={todos} />
     </>
   )
 }

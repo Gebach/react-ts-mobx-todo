@@ -1,5 +1,6 @@
-import { Button, Tabs, TabsProps } from 'antd'
-import todoStore from '../../stores/todo-store'
+import { Tabs, TabsProps } from 'antd'
+import todosStore from '../../stores/todo-store'
+import ClearAllButton from '../Button/ClearAllButton'
 
 interface TabsComponentProps {
   onChange: (key: string) => void
@@ -14,8 +15,7 @@ function TabsComponent({
   tabsAmount,
   tabsKeys = tabsLabels.map(l => `${tabsLabels.indexOf(l)}`),
 }: TabsComponentProps) {
-  const { clearTodos } = todoStore
-
+  const { clearTodos } = todosStore
   const items: TabsProps['items'] = []
 
   for (let i = 0; i < tabsAmount; i++) {
@@ -32,9 +32,7 @@ function TabsComponent({
   return (
     <>
       <Tabs defaultActiveKey="0" items={items} onChange={onChange} />
-      <Button color="danger" variant="solid" onClick={onClickHandler}>
-        Очистить все
-      </Button>
+      <ClearAllButton role="clear-todos" onClick={onClickHandler} />
     </>
   )
 }

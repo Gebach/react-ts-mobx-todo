@@ -2,30 +2,25 @@ import { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import TodoItem from './TodoItem'
-import todoStore from '../../stores/todo-store'
+import todosStore from '../../stores/todo-store'
 import TabsComponent from '../tabs/TabsComponent'
 import { Todo } from '../../models/Todo'
 
-export const TodoList = observer(() => {
-  const { storeTodos, sortTodos } = todoStore
+interface TodoListProps {
+  todosArr?: Todo[]
+}
+
+export const TodoList = observer(({ todosArr }: TodoListProps) => {
+  const { sortTodos } = todosStore
   const [tabKey, setTabKey] = useState<string>('0')
-  const [todos, setTodos] = useState<Todo[] | undefined>(storeTodos)
+  const [todos, setTodos] = useState<Todo[] | undefined>()
 
   useEffect(() => {
-    setTodos(storeTodos)
-  }, [storeTodos])
+    setTodos(todosArr)
+  })
 
   const onChange = (key: string) => {
-    switch (key) {
-      case '1':
-        setTabKey('1')
-        break
-      case '2':
-        setTabKey('2')
-        break
-      default:
-        setTabKey('0')
-    }
+    setTabKey(key)
   }
 
   function onCompleteHandler() {

@@ -10,6 +10,7 @@ function CheckButton({ onClick }: CheckButtonProps) {
       style={{ color: 'rgb(34, 197, 94)', fontSize: '24px' }}
       onClick={onClick}
       className="transition-transform duration-300 hover:scale-125"
+      role="submit-btn"
     />
   )
 }

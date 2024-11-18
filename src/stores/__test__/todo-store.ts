@@ -1,13 +1,8 @@
-import { makeAutoObservable } from 'mobx'
-import { Todo } from '../models/Todo'
+import { Todo } from '../../models/Todo'
 
 class TodosStore {
-  storeTodos: Todo[] = []
+  storeTodos: Todo[] = [new Todo('1', 'Make coffee', false)]
   isLoading: boolean = false
-
-  constructor() {
-    makeAutoObservable(this)
-  }
 
   getLocalTodos = () => {
     const todosString = localStorage.getItem('todos')
@@ -25,7 +20,7 @@ class TodosStore {
 
   addNewTodo = (todo: Todo) => {
     this.storeTodos.unshift(todo)
-    localStorage.setItem('todos', JSON.stringify(this.storeTodos))
+    // localStorage.setItem('todos', JSON.stringify(this.storeTodos))
   }
 
   sortTodos = () => {
@@ -41,19 +36,19 @@ class TodosStore {
     if (index > -1) {
       todosStore.storeTodos.splice(index, 1)
     }
-    localStorage.setItem('todos', JSON.stringify(this.storeTodos))
+    // localStorage.setItem('todos', JSON.stringify(this.storeTodos))
   }
 
   clearTodos = () => {
     this.storeTodos = []
-    localStorage.clear()
+    // localStorage.clear()
   }
 
   updateTodo = (id: string, updatedFields: Partial<Todo>) => {
     const todoToUpdate = this.storeTodos.find(todo => todo.getTodoId() === id)
     if (todoToUpdate) {
       Object.assign(todoToUpdate, updatedFields)
-      localStorage.setItem('todos', JSON.stringify(this.storeTodos))
+      // localStorage.setItem('todos', JSON.stringify(this.storeTodos))
     }
   }
 }

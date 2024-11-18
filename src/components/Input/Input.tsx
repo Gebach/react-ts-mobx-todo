@@ -1,9 +1,10 @@
 interface InputProps {
   value: string
+  role?: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-function Input({ value, onChange }: InputProps) {
+function Input({ value, onChange, role }: InputProps) {
   return (
     <input
       type="text"
@@ -14,6 +15,7 @@ function Input({ value, onChange }: InputProps) {
       id="todoInput"
       value={value}
       onChange={e => onChange(e)}
+      role={role}
     />
   )
 }
